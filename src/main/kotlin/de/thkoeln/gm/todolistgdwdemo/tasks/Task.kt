@@ -11,6 +11,6 @@ class Task {
     var createdAt: Date = Date();
 
     override fun toString(): String {
-        return "Name: ${name}, open: ${open}, createdAt: ${createdAt}"
+        return "Name: $name, open: $open, createdAt: $createdAt"
     }
 }

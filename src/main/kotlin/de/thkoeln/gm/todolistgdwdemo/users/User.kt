@@ -9,6 +9,6 @@ class User {
 
     override fun toString(): String {
         val taskList : String = tasks.joinToString(";")
-        return "Email: ${email} (tasks: ${taskList})"
+        return "Email: $email (tasks: $taskList)"
     }
 }

@@ -14,13 +14,13 @@ class Task {
      @GenericGenerator(name="uuid2", strategy = "uuid2")
      var id: UUID = UUID.randomUUID()
      var name: String = ""
-     var open: Boolean = false
+     var open: Boolean = true
      var createdAt: Date = Date()
 
-     @ManyToOne
-     var user: User? = null
+     //@ManyToOne
+     //var user: User? = null
 
     override fun toString(): String {
-        return "[Name: $name, open: $open, createdAt: $createdAt]"
+        return "[Id: $id, Name: $name, open: $open, createdAt: $createdAt]"
     }
 }

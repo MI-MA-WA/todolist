@@ -11,26 +11,27 @@ class TasksController (private val tasksService: TasksService) {
 
     @PostMapping("/tasks")
     @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
     fun saveTask(name: String): String {
         var task: Task = Task()
         task.name = name
-        task.createdAt = Date()
-        task.open = true
+        tasksService.save(task)
         return task.toString()
     }
+
     @GetMapping("/tasks")
     @ResponseBody
     fun getAllTasks(): String {
         val tasks: List<Task> = tasksService.findAllTasks()
-        var payload = tasks.joinToString(";")
-        return payload
+        return tasks.joinToString(";")
     }
 
     @GetMapping("/tasks/{id}")
-    fun getTask(@PathVariable id: UUID): Task {
+    @ResponseBody
+    fun getTask(@PathVariable id: UUID): String {
         var task = tasksService.findById(id)
         if(task != null){
-            return task
+            return task.toString()
         } else {
             throw ChangeSetPersister.NotFoundException()
         }

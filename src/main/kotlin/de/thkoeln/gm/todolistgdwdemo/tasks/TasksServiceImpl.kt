@@ -15,13 +15,13 @@ class TasksServiceImpl (private val tasksRepository: TasksRepository) : TasksSer
     }
 
     override fun findAllOpenTask(): List<Task> {
-        //return taskRepository.findByOpenTrue()
-        return tasksRepository.getAllOpen()
+        return tasksRepository.findByOpenTrue()
+        //return tasksRepository.getAllOpen()
     }
 
     override fun findAllClosedTask(): List<Task> {
-        //return taskRepository.findByOpenFalse()
-        return tasksRepository.getAllClosed()
+        return tasksRepository.findByOpenFalse()
+        //return tasksRepository.getAllClosed()
     }
 
     override fun delete(task: Task){

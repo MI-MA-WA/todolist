@@ -1,13 +1,13 @@
 package de.thkoeln.gm.todolistgdwdemo.tasks
 
+import de.thkoeln.gm.todolistgdwdemo.users.User
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
 @Service
 class TasksServiceImpl (private val tasksRepository: TasksRepository) : TasksService {
     override fun findById(id: UUID): Task? {
-        var task: Task? = tasksRepository.findByIdOrNull(id);
-        return task;
+        return tasksRepository.findByIdOrNull(id);
     }
 
     override fun findAllTasks(): List<Task> {
@@ -22,6 +22,10 @@ class TasksServiceImpl (private val tasksRepository: TasksRepository) : TasksSer
     override fun findAllClosedTask(): List<Task> {
         return tasksRepository.findByOpenFalse()
         //return tasksRepository.getAllClosed()
+    }
+
+    override fun getAllOpenByUser(user: User): List<Task> {
+        return tasksRepository.findByOpenTrueAndUser(user)
     }
 
     override fun delete(task: Task){

@@ -1,21 +1,32 @@
 package de.thkoeln.gm.todolistgdwdemo.users
 
 import de.thkoeln.gm.todolistgdwdemo.tasks.Task
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 @Controller
-class UsersController {
-    @GetMapping("/users")
+class UsersController (private val usersService: UsersService) {
+    @PostMapping("/users")
     @ResponseBody
-    fun saveUser(email: String, taskName: String): String{
-        var user: User = User()
+    fun saveUser(email: String): String{
+        val user = User()
         user.email = email
-        var  task : Task = Task()
-        task.name = taskName
-        user.tasks.add(task)
+        usersService.save(user)
         return user.toString()
+    }
+
+    fun getUser(id: UUID): String {
+        val user: User? = usersService.findById(id)
+        if(user != null){
+            return user.toString()
+        } else {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
+
     }
 }

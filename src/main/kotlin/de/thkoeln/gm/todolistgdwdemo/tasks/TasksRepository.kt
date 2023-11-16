@@ -17,7 +17,4 @@ interface TasksRepository : CrudRepository<Task, UUID>{
 
     @Query(value = "SELECT t FROM Task t WHERE t.open = false")
     fun getAllClosed(): List<Task>
-
-    @Query(value = "SELECT t FROM Task t WHERE t.open = false AND t.user.id = :userId ")
-    fun getAllOpenByUserId(userId: UUID) : List<Task>
 }

@@ -6,6 +6,7 @@ import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Controller
@@ -44,18 +45,32 @@ class TasksController (private val tasksService: TasksService, private val users
     @ResponseBody
     fun getTask(@PathVariable userId: UUID, @PathVariable id: UUID): String {
         var task = tasksService.findById(id)
-        if(task != null){
+        var user: User? = usersService.findById(userId)
+
+        if(task != null && user != null){
+
+            if(user.id != task.user?.id) {
+                throw ResponseStatusException(HttpStatus.FORBIDDEN)
+            }
+
             return task.toString()
         } else {
             throw ChangeSetPersister.NotFoundException()
         }
     }
 
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/users/{userId}/tasks/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateTask(@PathVariable id: UUID, open: Boolean?, name: String?){
-        var task = tasksService.findById(id)
-        if (task != null) {
+    fun updateTask(@PathVariable userId: UUID, @PathVariable id: UUID, open: Boolean?, name: String?){
+        var task: Task? = tasksService.findById(id)
+        var user: User? = usersService.findById(userId)
+
+        if (task != null && user != null) {
+
+            // Changing tasks of another user is not allowed
+            if(user.id != task.user?.id) {
+                throw ResponseStatusException(HttpStatus.FORBIDDEN)
+            }
 
             if (open != null) {
                 task.open = open
@@ -72,21 +87,32 @@ class TasksController (private val tasksService: TasksService, private val users
 
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("/users/{userId}/tasks/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteTask(@PathVariable id: UUID){
-        var savedTask = tasksService.findById(id)
-        if(savedTask != null){
-            tasksService.delete(savedTask)
+    fun deleteTask(@PathVariable userId: UUID, @PathVariable id: UUID){
+
+        var task = tasksService.findById(id)
+        var user: User? = usersService.findById(userId)
+
+        if(task != null && user != null){
+            if(user.id != task.user?.id) {
+                throw ResponseStatusException(HttpStatus.FORBIDDEN)
+            }
+
+            tasksService.delete(task)
         }
     }
 
-    @DeleteMapping("/tasks")
+    @DeleteMapping("/users/{userId}/tasks")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteAllTasks(){
-        var tasks = tasksService.findAllTasks()
-        for (task in tasks){
-            tasksService.delete(task)
+    fun deleteAllTasks(@PathVariable userId: UUID){
+
+        var user: User? = usersService.findById(userId)
+        if(user != null) {
+            for (task in user.tasks){
+                tasksService.delete(task)
+            }
         }
+
     }
 }

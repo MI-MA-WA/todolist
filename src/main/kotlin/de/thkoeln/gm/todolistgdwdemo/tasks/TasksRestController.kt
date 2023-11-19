@@ -10,7 +10,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1")
-class TasksRESTController(private val usersService: UsersService, private val tasksService: TasksService )
+class TasksRestController(private val usersService: UsersService, private val tasksService: TasksService )
 {
 
     @PostMapping("/users/{userId}/tasks")

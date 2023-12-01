@@ -24,7 +24,7 @@ class TasksController (private val tasksService: TasksService, private val users
             tasksService.save(task)
             return task.toString()
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
     }
 
@@ -36,7 +36,7 @@ class TasksController (private val tasksService: TasksService, private val users
             val tasks: List<Task> = tasksService.getAllOpenByUser(user)
             return tasks.joinToString(";")
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
 
     }
@@ -55,7 +55,7 @@ class TasksController (private val tasksService: TasksService, private val users
 
             return task.toString()
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
     }
 
@@ -82,7 +82,7 @@ class TasksController (private val tasksService: TasksService, private val users
 
             tasksService.save(task)
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
 
     }

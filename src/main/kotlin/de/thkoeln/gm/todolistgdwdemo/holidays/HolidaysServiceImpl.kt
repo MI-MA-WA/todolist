@@ -25,10 +25,10 @@ class HolidaysServiceImpl (
          val holidays : ArrayList<Holiday> = ArrayList<Holiday>()
 
          json.keySet().forEach{ key ->
-             val holidayJson : JSONObject = json.get(key) as JSONObject
+             val holidayJson : JSONObject = json.getJSONObject(key)
              val holiday : Holiday = Holiday()
              holiday.name = key
-             holiday.date = LocalDate.parse(holidayJson.get("datum") as String)
+             holiday.date = LocalDate.parse(holidayJson.getString("datum"))
              holidays.add(holiday)
          }
 

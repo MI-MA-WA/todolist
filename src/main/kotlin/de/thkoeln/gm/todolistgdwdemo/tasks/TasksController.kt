@@ -44,8 +44,8 @@ class TasksController (private val tasksService: TasksService, private val users
     @GetMapping("/users/{userId}/tasks/{id}")
     @ResponseBody
     fun getTask(@PathVariable userId: UUID, @PathVariable id: UUID): String {
-        var task = tasksService.findById(id)
-        var user: User? = usersService.findById(userId)
+        val task = tasksService.findById(id)
+        val user: User? = usersService.findById(userId)
 
         if(task != null && user != null){
 

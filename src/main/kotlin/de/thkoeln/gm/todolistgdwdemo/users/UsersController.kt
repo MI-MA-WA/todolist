@@ -9,33 +9,26 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
-@Controller
+@RestController
 class UsersController (private val usersService: UsersService, private val holidaysService: HolidaysService) {
 
-    @GetMapping("/")
-    @ResponseBody
-    fun testHolidays() : String{
-        val holidays : List<Holiday> = holidaysService.getHolidays()
-        return holidays.joinToString(";")
-    }
 
     @PostMapping("/users")
-    @ResponseBody
-    fun saveUser(email: String): String{
+    fun saveUser(email: String){
         val user = User()
         user.email = email
         usersService.save(user)
-        return user.toString()
     }
 
     @GetMapping("/users/{id}")
-    fun getUser(@PathVariable id: UUID): String {
+    fun getUser(@PathVariable id: UUID): User {
         val user: User? = usersService.findById(id)
         if(user != null){
-            return user.toString()
+            return user
         } else {
             throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }

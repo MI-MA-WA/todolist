@@ -10,21 +10,29 @@ class TasksServiceImpl (private val tasksRepository: TasksRepository) : TasksSer
         return tasksRepository.findByIdOrNull(id);
     }
 
-    override fun findAllTasks(): List<Task> {
+    override fun findAll(): List<Task> {
         return tasksRepository.findAll().toList();
     }
 
-    override fun findAllOpenTask(): List<Task> {
+    override fun findAllOpen(): List<Task> {
         return tasksRepository.findByOpenTrue()
         //return tasksRepository.getAllOpen()
     }
 
-    override fun findAllClosedTask(): List<Task> {
+    override fun findAllClosed(): List<Task> {
         return tasksRepository.findByOpenFalse()
         //return tasksRepository.getAllClosed()
     }
 
     override fun getAllOpenByUser(user: User): List<Task> {
+        return tasksRepository.findByOpenTrueAndUser(user)
+    }
+
+    override fun getAllClosedByUser(user: User): List<Task> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAllByUser(user: User): List<Task> {
         return tasksRepository.findByOpenTrueAndUser(user)
     }
 

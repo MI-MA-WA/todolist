@@ -1,10 +1,8 @@
 package de.thkoeln.gm.todolistgdwdemo.users
 
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
@@ -13,10 +11,13 @@ class UsersRestController (private val usersService: UsersService) {
 
 
     @PostMapping("/users")
-    fun saveUser(email: String){
+    @ResponseStatus(HttpStatus.CREATED)
+    fun saveUser(email: String, response: HttpServletResponse) : User {
         val user = User()
         user.email = email
         usersService.save(user)
+        //response.setHeader("Location","/users/${user.id}")
+        return user
     }
 
     @GetMapping("/users/{id}")
@@ -28,5 +29,16 @@ class UsersRestController (private val usersService: UsersService) {
             throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
 
+    }
+
+    @DeleteMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteUser(@PathVariable id: UUID) {
+        val user: User? = usersService.findById(id)
+        if(user != null) {
+            usersService.delete(user)
+        } else {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
     }
 }

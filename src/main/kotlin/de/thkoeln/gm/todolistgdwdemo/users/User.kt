@@ -16,9 +16,6 @@ class User {
     var id: UUID = UUID.randomUUID()
     var email: String = ""
 
-    @OneToMany
-    var tasks: List<Task> = ArrayList()
-
     override fun toString(): String {
         //val taskList : String = tasks.joinToString(";")
         //return "Email: $email (tasks: $taskList)"

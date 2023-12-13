@@ -11,6 +11,7 @@ interface TasksRepository : CrudRepository<Task, UUID>{
     fun findByOpenTrue() : List<Task>
     fun findByOpenFalse() : List<Task>
     fun findByOpenTrueAndUser(user: User): List<Task>
+    fun findByOpenFalseAndUser(user: User): List<Task>
 
     @Query(value = "SELECT t FROM Task t WHERE t.open = true")
     fun getAllOpen() : List<Task>

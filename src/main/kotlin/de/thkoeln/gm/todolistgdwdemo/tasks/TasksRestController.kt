@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
-@RequestMapping("/api/v1")
 class TasksRestController(private val usersService: UsersService, private val tasksService: TasksService )
 {
 
@@ -52,7 +51,7 @@ class TasksRestController(private val usersService: UsersService, private val ta
 
             return task
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
     }
 
@@ -79,7 +78,7 @@ class TasksRestController(private val usersService: UsersService, private val ta
 
             tasksService.save(task)
         } else {
-            throw ChangeSetPersister.NotFoundException()
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }
 
     }
@@ -105,8 +104,10 @@ class TasksRestController(private val usersService: UsersService, private val ta
     fun deleteAllTasks(@PathVariable userId: UUID){
 
         var user: User? = usersService.findById(userId)
+
         if(user != null) {
-            for (task in user.tasks){
+            var tasks: List<Task> = tasksService.getAllByUser(user)
+            for (task in tasks){
                 tasksService.delete(task)
             }
         }

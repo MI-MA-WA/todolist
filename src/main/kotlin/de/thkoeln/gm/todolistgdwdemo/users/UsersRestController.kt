@@ -1,5 +1,6 @@
 package de.thkoeln.gm.todolistgdwdemo.users
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -12,9 +13,7 @@ class UsersRestController (private val usersService: UsersService) {
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveUser(email: String, response: HttpServletResponse) : User {
-        val user = User()
-        user.email = email
+    fun saveUser(@RequestBody user: User, response: HttpServletResponse) : User {
         usersService.save(user)
         //response.setHeader("Location","/users/${user.id}")
         return user

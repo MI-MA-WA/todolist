@@ -14,11 +14,9 @@ class TasksRestController(private val usersService: UsersService, private val ta
 
     @PostMapping("/users/{userId}/tasks")
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveTask(name: String, @PathVariable userId: UUID): Task {
+    fun saveTask(task: Task, @PathVariable userId: UUID): Task {
         val user: User? = usersService.findById(userId)
         if(user != null) {
-            var task: Task = Task()
-            task.name = name
             task.user = user
             tasksService.save(task)
             return task
@@ -57,23 +55,14 @@ class TasksRestController(private val usersService: UsersService, private val ta
 
     @PutMapping("/users/{userId}/tasks/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateTask(@PathVariable userId: UUID, @PathVariable id: UUID, open: Boolean?, name: String?){
-        var task: Task? = tasksService.findById(id)
+    fun updateTask(@PathVariable userId: UUID, @PathVariable id: UUID, task: Task){
         var user: User? = usersService.findById(userId)
 
-        if (task != null && user != null) {
+        if (tasksService.findById(id) != null && user != null) {
 
             // Changing tasks of another user is not allowed
             if(user.id != task.user?.id) {
                 throw ResponseStatusException(HttpStatus.FORBIDDEN)
-            }
-
-            if (open != null) {
-                task.open = open
-            }
-
-            if (name != null){
-                task.name = name
             }
 
             tasksService.save(task)

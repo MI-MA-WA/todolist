@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>My Tasks <span th:text="${user.email}"></span></h1>
+<ul>
+    <th:block th:each="task: ${tasks}">
+        <li  th:text="${task.name}"></li>
+    </th:block>
+</ul>
+
+<h2>Add new Task</h2>
+<form th:action="@{/users/{id}/tasks(id = ${user.id})}" method="post" th:object="${task}">
+    <input type="text" th:field="*{name}" placeholder="new Task">
+    <button type="submit">Add</button>
+</form>
+</body>
+<script>
+
+</script>
+</html>

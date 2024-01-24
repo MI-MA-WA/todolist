@@ -2,6 +2,7 @@ package de.thkoeln.gm.todolistgdwdemo.users
 
 import de.thkoeln.gm.todolistgdwdemo.tasks.Task
 import jakarta.persistence.*
+import jakarta.validation.constraints.Email
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
 import kotlin.collections.ArrayList
@@ -14,7 +15,14 @@ class User {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     var id: UUID = UUID.randomUUID()
-    var email: String = ""
+    @Email var email: String = ""
+
+    constructor(email: String){
+        User()
+        this.email = email
+    }
+
+    constructor()
 
     override fun toString(): String {
         //val taskList : String = tasks.joinToString(";")

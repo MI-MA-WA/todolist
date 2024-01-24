@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
+@RequestMapping("/api/v1")
 class TasksRestController(private val usersService: UsersService, private val tasksService: TasksService )
 {
 

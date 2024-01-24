@@ -10,6 +10,10 @@ class UsersServiceImpl (private val usersRepository: UsersRepository) : UsersSer
         return usersRepository.findByIdOrNull(id)
     }
 
+    override fun getAllUsers(): List<User> {
+        return usersRepository.findAll().toList()
+    }
+
     override fun save(user: User) {
         usersRepository.save(user)
     }

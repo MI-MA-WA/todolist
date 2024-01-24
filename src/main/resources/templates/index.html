@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todolist</title>
+</head>
+<body>
+<h1>Users</h1>
+<ul>
+    <th:block th:each="user: ${users}">
+        <li><a  th:href="@{/users/{id}/tasksform(id = ${user.id})}" th:text="${user.email}"></a></li>
+    </th:block>
+</ul>
+<hr>
+<h1>Add User</h1>
+<form th:action="@{/users}" th:object="${user}" method="post">
+    <input type="text" th:field="*{email}" placeholder="max@mustermann.de" id="task">
+    <button type="submit">Add</button>
+</form>
+</body>
+</html>

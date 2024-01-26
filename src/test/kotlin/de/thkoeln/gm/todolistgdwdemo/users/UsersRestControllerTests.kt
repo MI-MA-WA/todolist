@@ -18,7 +18,7 @@ class UsersRestControllerTests() {
         val userJSON = JSONObject()
         userJSON.put("email","viet.nguyen@th-koeln.de")
 
-        mockMvc.post("/users") {
+        mockMvc.post("/api/v1/users") {
             contentType = MediaType.APPLICATION_JSON
             content = userJSON.toString()
             accept = MediaType.APPLICATION_JSON
